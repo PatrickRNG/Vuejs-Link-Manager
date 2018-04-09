@@ -14,8 +14,8 @@
       <ul>
         <li v-for="(link, index) in links" v-bind:key="index">
           <span>{{ link }}</span>
-          <a target="_blank" class="visit" v-bind:href="link" >Visit</a>
-          <button v-on:click.prevent="formatText(index, link)">Format</button>
+          <a target="_blank" class="visit" :href="visitedLinks[index]">Visit</a>
+          <button v-on:click="formatText(index)">Format</button>
           <button v-on:click="deleteLink(index)" class="removeButton">Remove</button>
         </li>
       </ul>
@@ -33,7 +33,7 @@
 
 import Stats from '@/components/Stats.vue'
 import { mapState, mapMutations, mapActions, mapGetters} from 'vuex'
-import store from '../store'
+import store from '../store/store'
 
 export default {
   name: 'HelloWorld',
@@ -41,38 +41,40 @@ export default {
     return {
       newLink: '',
       showError: false,
+      visitedLinks: []
     }
   },
   components: {
     Stats
   },
   computed: {
-    ...mapState([
+    ...mapState ([
       'title',
       'links',
+      'STORAGE_KEY',
+      'STORAGE_VISITED_KEY'
     ])
-    //Other stuff here
   },
   methods: {
-    ...mapMutations([
+    ...mapMutations ([
       'ADD_LINK',
       'GET_LC_ITEMS',
       'FORMAT_LINK'
     ]),
-    ...mapActions([
+    ...mapActions ([
       'removeLink',
       'getLCitems',
       'formatLink'
     ]),
-    addLink: function() {
+    addLink: function () {
       // let regex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm
-      this.ADD_LINK(this.newLink)
+      this.ADD_LINK (this.newLink)
       this.newLink = '';      
     },
-    deleteLink: function(link) {
+    deleteLink: function (link) {
       this.removeLink(link)
     },
-    validateInput: function() {
+    validateInput: function () {
       this.$validator.validate().then((result) => {
         if (result) {
           this.addLink();
@@ -82,15 +84,22 @@ export default {
         }
       });
     },
-    formatText: function(index, txt) {
-      this.formatLink(index, txt);
+    formatText: function (link) {
+      this.formatLink(link);
+
+      localStorage.setItem(this.STORAGE_VISITED_KEY, this.links);
     },
-    getLCitem: function(links) {
-      this.getLCitems(store.state.links);
+    getLCitem: function (links) {
+      this.getLCitems(this.links);
+    },
+    returnVisitedLink: function () {
+      let item = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
+      this.visitedLinks = item;
     }
   },
-  created() {
+  created () {
     this.getLCitem();
+    this.returnVisitedLink();
   }
 }
 </script>
