@@ -14,9 +14,11 @@
       <ul>
         <li v-for="(link, index) in links" v-bind:key="index">
           <span>{{ link }}</span>
-          <a target="_blank" class="visit" :href="visitedLinks[index]">Visit</a>
-          <button v-on:click="formatText(index)">Format</button>
-          <button v-on:click="deleteLink(index)" class="removeButton">Remove</button>
+          <div class="listButtons">
+            <a target="_blank" class="visit" :href="visitedLinks[index]">Visit</a>
+            <button v-on:click="formatText(index)" class="formatButton">Format</button>
+            <button v-on:click="deleteLink(index)" class="removeButton">Remove</button>
+          </div>
         </li>
       </ul>
 
@@ -134,6 +136,15 @@ ul li {
   box-shadow: 1px 1px 8px #000;
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
+}
+
+ul li .listButtons {
+  display: flex;
+}
+
+ul li span {
+  width: 60%;
 }
 
 ul li:hover {
@@ -190,7 +201,7 @@ input[type=submit]:hover {
   border-bottom: 1px solid #0ddaad;
   padding: 12px;
   left: 0;
-  top: 13px;
+  top: 19px;
   padding-right: 0;
   padding-left: 0;
   width: 0;
@@ -224,11 +235,23 @@ input:focus::placeholder {
   color: #fff;
   border-radius: 3px;
   transition: .15s;
-  margin-left: auto;
+  margin-left: 12px;
+  -webkit-appearance: none;  
 }
 
-.removeButton:hover {
+.removeButton:hover, .formatButton:hover {
   background: #0ddaad;
+}
+
+.formatButton {
+  background-color: #03c298;
+  border: none;
+  padding: 6px;
+  color: #fff;
+  border-radius: 3px;
+  transition: .15s;
+  margin-left: auto;
+  -webkit-appearance: none;
 }
 
 .error {
@@ -239,6 +262,10 @@ input:focus::placeholder {
   color: #ddd;
   padding: 0;
   margin: 0 0 20px 0;
+}
+
+@media screen and (max-width: ) {
+
 }
 
 </style>

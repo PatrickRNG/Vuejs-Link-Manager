@@ -10,7 +10,7 @@ export default {
     getLCitems: (context, payload) => {
     context.commit('GET_LC_ITEMS', payload)
     },
-    
+
     getVisitedLCitems: (context, payload) => {
         context.commit('GET_VISITED_LC_ITEMS', payload)
     },
@@ -20,7 +20,7 @@ export default {
         setTimeout(() => {
         commit('REMOVE_ALL')
         resolve()
-        }, 1500)
+        }, 1000)
     });
     }
 }
