@@ -52,7 +52,8 @@ export default {
       'title',
       'links',
       'STORAGE_KEY',
-      'STORAGE_VISITED_KEY'
+      'STORAGE_VISITED_KEY',
+      'GET_VISITED_LC_ITEMS'
     ])
   },
   methods: {
@@ -64,7 +65,8 @@ export default {
     ...mapActions ([
       'removeLink',
       'getLCitems',
-      'formatLink'
+      'getVisitedLCitems',
+      'formatLink',
     ]),
     addLink: function () {
       // let regex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm
@@ -87,7 +89,7 @@ export default {
     formatText: function (link) {
       this.formatLink(link);
 
-      localStorage.setItem(this.STORAGE_VISITED_KEY, this.links);
+      localStorage.setItem(this.STORAGE_VISITED_KEY, JSON.stringify(this.links));
     },
     getLCitem: function (links) {
       this.getLCitems(this.links);
@@ -188,7 +190,7 @@ input[type=submit]:hover {
   border-bottom: 1px solid #0ddaad;
   padding: 12px;
   left: 0;
-  top: 16px;
+  top: 13px;
   padding-right: 0;
   padding-left: 0;
   width: 0;

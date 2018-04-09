@@ -5,14 +5,20 @@ export default {
         // if the text in input is a url, push the url to the list, else push the text
         //using this because when it wasn't a url, would return localhost (or the current url)
         //instead of the text written in the input
-        state.links.push(payload);
+        if (state.links != undefined || state.links.length != 0) {
+          state.links.push(payload);
+        } else {
+          console.log('No links');
+        }
   
         localStorage.setItem(state.STORAGE_KEY, JSON.stringify(state.links));
+        localStorage.setItem(state.STORAGE_VISITED_KEY, JSON.stringify(state.links));
       },
 
       REMOVE_LINK: (state, payload) => {
         state.links.splice(payload, 1);
   
+        localStorage.setItem(state.STORAGE_VISITED_KEY, JSON.stringify(state.links));
         localStorage.setItem(state.STORAGE_KEY, JSON.stringify(state.links));
       },
 
@@ -29,6 +35,12 @@ export default {
       },
 
       GET_LC_ITEMS: (state) => {
-        state.links = JSON.parse(localStorage.getItem(state.STORAGE_KEY));
+        state.links = JSON.parse(localStorage.getItem(state.STORAGE_VISITED_KEY));
       }
 }
+
+// Link storage = full link
+// Visited links storage = part link
+
+// Visited = link storage
+// List link = Visited Links storage
