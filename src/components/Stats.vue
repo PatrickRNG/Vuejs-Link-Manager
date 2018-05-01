@@ -57,7 +57,6 @@ p span {
   background-color: #03c298;
   color: #fff;
   border: none;
-  width: 30%;
   box-shadow: 0 10px 20px rgba(1, 1, 1, .3);
   transition: .2s;
   margin-bottom: 30px;

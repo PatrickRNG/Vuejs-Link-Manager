@@ -2,14 +2,7 @@ import Vue from 'vue';
 
 export default {
     ADD_LINK: (state, payload) => {
-        // if the text in input is a url, push the url to the list, else push the text
-        //using this because when it wasn't a url, would return localhost (or the current url)
-        //instead of the text written in the input
-        if (state.links != undefined || state.links.length != 0) {
-          state.links.push(payload);
-        } else {
-          console.log('No links');
-        }
+        state.links.push(payload);
   
         localStorage.setItem(state.STORAGE_KEY, JSON.stringify(state.links));
         localStorage.setItem(state.STORAGE_VISITED_KEY, JSON.stringify(state.links));
@@ -35,7 +28,11 @@ export default {
       },
 
       GET_LC_ITEMS: (state) => {
-        state.links = JSON.parse(localStorage.getItem(state.STORAGE_VISITED_KEY));
+        if (localStorage.getItem(state.STORAGE_VISITED_KEY) === null) {
+          localStorage.setItem(state.STORAGE_VISITED_KEY, JSON.stringify(state.links));
+        } else {
+          state.links = JSON.parse(localStorage.getItem(state.STORAGE_VISITED_KEY));
+        }
       }
 }
 

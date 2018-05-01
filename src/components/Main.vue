@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="container">
 
     <div class="left">
       <h1> {{ title }} </h1>
@@ -24,8 +24,10 @@
 
     </div>
 
-    <div class="right">
-      <stats/>
+    <div class="menu" @click="showMenu">&#9776;</div>
+
+    <div class="right rightMobile" v-if="mobileMenu">
+      <stats />
     </div>
     
   </div>
@@ -38,12 +40,13 @@ import { mapState, mapMutations, mapActions, mapGetters} from 'vuex'
 import store from '../store/store'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Main',
   data()  {
     return {
       newLink: '',
       showError: false,
-      visitedLinks: []
+      visitedLinks: [],
+      mobileMenu: true,
     }
   },
   components: {
@@ -55,7 +58,6 @@ export default {
       'links',
       'STORAGE_KEY',
       'STORAGE_VISITED_KEY',
-      'GET_VISITED_LC_ITEMS'
     ])
   },
   methods: {
@@ -67,7 +69,6 @@ export default {
     ...mapActions ([
       'removeLink',
       'getLCitems',
-      'getVisitedLCitems',
       'formatLink',
     ]),
     addLink: function () {
@@ -97,8 +98,22 @@ export default {
       this.getLCitems(this.links);
     },
     returnVisitedLink: function () {
-      let item = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
-      this.visitedLinks = item;
+      if (localStorage.getItem(this.STORAGE_KEY) === null) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.visitedLinks));
+      } else {
+        let item = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
+        this.visitedLinks = item;
+      }
+    },
+    showMenu: function () {
+      let rightMenu = document.querySelector('.rightMobile');
+      rightMenu.style.display = 'block';
+            
+      if (this.showMenu == false) {
+        rightMenu.style.display = 'none';
+      }
+      
+      this.showMenu = !this.showMenu;
     }
   },
   created () {
@@ -111,9 +126,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.hello {
+.container {
   display: grid;
-  grid-template-columns: repeat(2, 50%);
+  grid-template-columns: 3fr 2fr;
   grid-template-rows: 100%;
   grid-template-areas: "left right";
   height: 100%;
@@ -141,6 +156,7 @@ ul li {
 
 ul li .listButtons {
   display: flex;
+  align-items: baseline;
 }
 
 ul li span {
@@ -161,6 +177,15 @@ h2, h1 {
 
 .right {
   grid-area: right;
+  display: block;
+}
+
+.menu {
+  color: #fff;
+  font-size: 2rem;
+  position: absolute;
+  right: 30px;
+  display: none;
 }
 
 form {position: relative;}
@@ -264,8 +289,28 @@ input:focus::placeholder {
   margin: 0 0 20px 0;
 }
 
-@media screen and (max-width: ) {
+@media screen and (min-width: 826px) {
+  .rightMobile {
+    display: block !important;
+    position: relative;
+  }
+}
 
+@media screen and (max-width: 825px) {
+  .container {
+    grid-template-columns: 4fr 0fr;
+  }
+  .rightMobile {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    background: #403b50;
+    display: none;
+  }
+  .menu {
+    display: block;
+    z-index: 1;
+  }
 }
 
 </style>
