@@ -7,6 +7,7 @@
 
     <button class="button removeButton" v-on:click="removeAllLinks">Remove all</button>
     <p> {{msg}} </p>
+    <button class="button formatButton" v-on:click="formatAllLinks">Format all</button>    
 
   </div>
 </template>
@@ -27,15 +28,19 @@ export default {
       'countLinks',
       'formatLinks'
     ])
-    //Other stuff here
   },
   methods: {
-      ...mapMutations(['REMOVE_ALL']),
-      ...mapActions(['removeAll']),
+      ...mapMutations(['REMOVE_ALL', 'FORMAT_ALL']),
+      ...mapActions(['removeAll', 'formatAll']),
+
       removeAllLinks() {
           this.removeAll().then(() => {
               this.msg = 'They have been removed'
           });
+      },
+
+      formatAllLinks() {
+        this.formatAll();
       }
   }
 }

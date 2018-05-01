@@ -19,6 +19,18 @@ export default {
         let regex = /([a-z0-9|-]+\.)*[a-z0-9|-]+\.[a-z]+/
         link = state.links[payload].toString().match(regex);
         Vue.set(state.links, payload, link[0]);
+
+        localStorage.setItem(state.STORAGE_VISITED_KEY, JSON.stringify(state.links));        
+      },
+      FORMAT_ALL: (state) => {
+        let regex = /([a-z0-9|-]+\.)*[a-z0-9|-]+\.[a-z]+/
+
+        state.links.forEach((item, index) => {
+          let link = item.toString().match(regex);
+          Vue.set(state.links, index, link[0]);
+        });
+
+        localStorage.setItem(state.STORAGE_VISITED_KEY, JSON.stringify(state.links));        
       },
 
       REMOVE_ALL: (state) => {
@@ -41,3 +53,4 @@ export default {
 
 // Visited = link storage
 // List link = Visited Links storage
+
